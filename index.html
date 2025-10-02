@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DesignBridge - Technical Specification</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .diagram {
+            max-width: 100%;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-blue-600 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">DesignBridge</h1>
+            <div class="space-x-4">
+                <button class="bg-white text-blue-600 px-4 py-2 rounded-lg">Download Spec</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold mb-6">Technical Specification - MVP</h2>
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-xl font-semibold mb-4">Database Schema</h3>
+                <div class="diagram overflow-x-auto bg-gray-100 p-4 rounded-lg">
+                    <pre class="text-sm">
+users
+├── id (PK)
+├── email
+├── phone
+├── type (student/school_admin/super_admin)
+├── name
+├── city
+├── academic_background
+├── design_interests
+└── created_at
+
+schools
+├── id (PK)
+├── name
+├── description
+├── courses
+├── location
+├── contact_info
+├── admin_id (FK -> users)
+└── status
+
+events
+├── id (PK)
+├── school_id (FK -> schools)
+├── title
+├── description
+├── date
+├── time
+├── venue
+├── city
+└── capacity
+
+event_registrations
+├── id (PK)
+├── event_id (FK -> events)
+├── user_id (FK -> users)
+└── status
+
+content_posts
+├── id (PK)
+├── school_id (FK -> schools)
+├── content_type
+├── content
+└── created_at
+
+follows
+├── id (PK)
+├── user_id (FK -> users)
+└── school_id (FK -> schools)
+                    </pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid md:grid-cols-2 gap-8">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-xl font-semibold mb-4">API Endpoints</h3>
+                <ul class="space-y-2">
+                    <li><code class="bg-gray-100 px-2 py-1 rounded">POST /api/auth/register</code></li>
+                    <li><code class="bg-gray-100 px-2 py-1 rounded">POST /api/auth/verify</code></li>
+                    <li><code class="bg-gray-100 px-2 py-1 rounded">GET /api/schools</code></li>
+                    <li><code class="bg-gray-100 px-2 py-1 rounded">GET /api/schools/:id</code></li>
+                    <li><code class="bg-gray-100 px-2 py-1 rounded">POST /api/events</code></li>
+                    <li><code class="bg-gray-100 px-2 py-1 rounded">GET /api/events</code></li>
+                    <li><code class="bg-gray-100 px-2 py-1 rounded">POST /api/events/register</code></li>
+                    <li><code class="bg-gray-100 px-2 py-1 rounded">POST /api/posts</code></li>
+                    <li><code class="bg-gray-100 px-2 py-1 rounded">GET /api/feed</code></li>
+                </ul>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-xl font-semibold mb-4">Development Timeline</h3>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-medium">Month 1</h4>
+                        <ul class="list-disc ml-4">
+                            <li>Setup project infrastructure</li>
+                            <li>Implement authentication</li>
+                            <li>Create basic user profiles</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-medium">Month 2</h4>
+                        <ul class="list-disc ml-4">
+                            <li>School profiles and management</li>
+                            <li>Event system</li>
+                            <li>Content feed</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-medium">Month 3</h4>
+                        <ul class="list-disc ml-4">
+                            <li>Admin dashboard</li>
+                            <li>Testing and optimization</li>
+                            <li>Deployment and launch</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-8">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-xl font-semibold mb-4">Technical Architecture</h3>
+                <div class="diagram bg-gray-100 p-4 rounded-lg text-center">
+                    <pre class="text-sm">
+Mobile App (React Native)
+        ↕
+API Gateway (Express.js)
+        ↕
+Business Logic Layer
+    ↙   ↓   ↘
+PostgreSQL  Firebase  AWS S3
+                    </pre>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-12 py-8">
+        <div class="container mx-auto px-4">
+            <p class="text-center">© 2023 DesignBridge. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Add download functionality
+        document.querySelector('button').addEventListener('click', () => {
+            const content = document.documentElement.outerHTML;
+            const blob = new Blob([content], { type: 'text/html' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'designbridge-spec.html';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        });
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
